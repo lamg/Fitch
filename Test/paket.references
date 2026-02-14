@@ -3,3 +3,5 @@ xunit
 xunit.runner.visualstudio
 coverlet.collector
 FSharp.Core
+System.Management
+System.Runtime.InteropServices

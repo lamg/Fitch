@@ -3,14 +3,34 @@ module Lib.SystemInfoWindows
 open System
 open System.Diagnostics
 open System.Net
+open System.Runtime.InteropServices
 
 open Types
 
+open Microsoft.Win32
+
+let getWindowsBuild () =
+  try
+    use key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion")
+    match key with
+    | null -> 0
+    | k ->
+      match k.GetValue("CurrentBuildNumber") with
+      | :? string as s -> int s
+      | _ -> 0
+  with
+  | _ -> 0
+
 let getWindowsVersion () =
   try
-    let osVersion = Environment.OSVersion
-    let version = osVersion.VersionString
-    version
+    let version = Environment.OSVersion.Version
+    let build = getWindowsBuild()
+    if version.Major = 10 && build >= 22000 then
+      "Windows 11"
+    elif version.Major = 10 then
+      "Windows 10"
+    else
+      Environment.OSVersion.VersionString
   with
   | _ -> "Windows"
 
@@ -20,9 +40,9 @@ let getKernel () =
   with
   | _ -> ""
 
-let getDistroName () = "Windows"
+let getDistroName () = getWindowsVersion()
 
-let getDistroId () = "windows"
+let getDistroId () = getWindowsVersion()
 
 let getHostName () =
   try
@@ -30,22 +50,32 @@ let getHostName () =
   with
   | _ -> ""
 
+
+[<Struct; StructLayout(LayoutKind.Sequential)>]
+type MEMORYSTATUSEX =
+  val mutable dwLength: uint32
+  val mutable dwMemoryLoad: uint32
+  val mutable ullTotalPhys: uint64
+  val mutable ullAvailPhys: uint64
+  val mutable ullTotalPageFile: uint64
+  val mutable ullAvailPageFile: uint64
+  val mutable ullTotalVirtual: uint64
+  val mutable ullAvailVirtual: uint64
+  val mutable ullAvailExtendedVirtual: uint64
+
+[<DllImport("kernel32.dll", SetLastError = true)>]
+extern bool GlobalMemoryStatusEx(MEMORYSTATUSEX& lpBuffer)
+
 let getMemoryInfo () =
   try
-    let wmiQuery = "SELECT TotalVisibleMemorySize, AvailablePhysicalMemory FROM Win32_OperatingSystem"
-    let searcher = new System.Management.ManagementObjectSearcher(wmiQuery)
-    let collection = searcher.Get()
-    
-    let mutable totalMemory = 0UL
-    let mutable availableMemory = 0UL
-    
-    for item in collection do
-      totalMemory <- UInt64.Parse(item["TotalVisibleMemorySize"].ToString()) / 1024UL
-      availableMemory <- UInt64.Parse(item["AvailablePhysicalMemory"].ToString()) / 1024UL
-    
-    let totalGB = (decimal totalMemory / 1024m).ToString("0.0")
-    let availGB = (decimal availableMemory / 1024m).ToString("0.0")
-    $"{availGB} GB / {totalGB} GB"
+    let mutable memStatus = MEMORYSTATUSEX()
+    memStatus.dwLength <- uint32 (Marshal.SizeOf(memStatus))
+    if GlobalMemoryStatusEx(&memStatus) then
+      let totalGB = (decimal memStatus.ullTotalPhys / decimal (1024UL * 1024UL * 1024UL)).ToString("0.0")
+      let availGB = (decimal memStatus.ullAvailPhys / decimal (1024UL * 1024UL * 1024UL)).ToString("0.0")
+      $"{availGB} GB / {totalGB} GB"
+    else
+      ""
   with
   | _ -> ""
 
