@@ -47,6 +47,12 @@ let displayInfo () =
         }
 
     let textPanel = Rows rows :> IRenderable
+    
+
+    let alignedTextPanel = 
+        let padder = Padder(textPanel)
+        padder.Padding <- Padding(0, 4, 0, 0) 
+        padder :> IRenderable
 
     let headerPanel : IRenderable =
         match config.displayMode with
@@ -55,8 +61,8 @@ let displayInfo () =
 
         | Logo ->
             match config.logoPosition with
-            | Left  -> Columns [ loadLogo info.distroId; textPanel ] :> IRenderable
-            | Right -> Columns [ textPanel; loadLogo info.distroId ] :> IRenderable
+            | Left  -> Columns [ loadLogo info.distroId; alignedTextPanel ] :> IRenderable
+            | Right -> Columns [ alignedTextPanel; loadLogo info.distroId ] :> IRenderable
 
     let finalLayout =
         match config.displayMode with
