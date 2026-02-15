@@ -90,13 +90,13 @@ let createDefaultConfigFile () =
       let defaultContent = """# Configuración de Fitch
 
 # Modo de visualización: "logo" o "distroname"
-displaymode = "distroname"
+displaymode = "logo"
 
 # Posición del logo: "left" o "right"
-logoposition = "right"
+logoposition = "left"
 
 # Color del texto: nombre de color Spectre (HotPink, Yellow, Blue, Green, etc.)
-textcolor = "HotPink"
+textcolor = "Blue"
 
 # ============================================
 # Colores para modo DistroName (solo aplican cuando displaymode = "distroname")
@@ -106,7 +106,7 @@ textcolor = "HotPink"
 distronamelabelcolor = "Blue"
 
 # Color del header (usuario@hostname y nombre de la distro en FigletText)
-distronameheadercolor = "HotPink"
+distronameheadercolor = "Grey"
 
 # Colores disponibles: Black, Red, Green, Yellow, Blue, Magenta, Cyan, White,
 # Grey, DarkRed, DarkGreen, DarkYellow, DarkBlue, DarkMagenta, DarkCyan,

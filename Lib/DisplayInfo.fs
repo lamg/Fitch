@@ -30,9 +30,33 @@ let loadLogo (logo: string) =
   padder :> IRenderable
 
 let getColorFromString (colorName: string) =
-  try
-    System.Enum.Parse(typeof<Color>, colorName, true) :?> Color
-  with
+  match colorName.ToLower() with
+  | "black" -> Color.Black
+  | "red" -> Color.Red
+  | "green" -> Color.Green
+  | "yellow" -> Color.Yellow
+  | "blue" -> Color.Blue
+  | "magenta" -> Color.Magenta1
+  | "cyan" -> Color.Cyan1
+  | "white" -> Color.White
+  | "grey" | "gray" -> Color.Grey
+  | "darkred" -> Color.DarkRed
+  | "darkgreen" -> Color.DarkGreen
+  | "darkyellow" -> Color.DarkGoldenrod
+  | "darkblue" -> Color.DarkBlue
+  | "darkmagenta" -> Color.DarkMagenta
+  | "darkcyan" -> Color.DarkCyan
+  | "hotpink" -> Color.HotPink
+  | "orange1" | "orange" -> Color.Orange1
+  | "purple" -> Color.Purple
+  | "teal" -> Color.Teal
+  | "aqua" -> Color.Aqua
+  | "fuchsia" -> Color.Fuchsia
+  | "lime" -> Color.Lime
+  | "maroon" -> Color.Maroon
+  | "navy" -> Color.Navy
+  | "olive" -> Color.Olive
+  | "silver" -> Color.Silver
   | _ -> Color.HotPink
 
 let renderDistroName (distroId: string) (color: Color) =
