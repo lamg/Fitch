@@ -158,6 +158,38 @@ let getCPUModelName (fileName: string) =
 
   | false -> ""
 
+let getGpuInfo () =
+  try
+    let startInfo = System.Diagnostics.ProcessStartInfo()
+    startInfo.FileName <- "lspci"
+    startInfo.Arguments <- ""
+    startInfo.RedirectStandardOutput <- true
+    startInfo.UseShellExecute <- false
+    startInfo.CreateNoWindow <- true
+    
+    use proc = System.Diagnostics.Process.Start(startInfo)
+    let output = proc.StandardOutput.ReadToEnd()
+    proc.WaitForExit()
+    
+    let lines = output.Split('\n') |> Array.toList
+    let gpuLines = 
+      lines 
+      |> List.filter (fun line -> 
+        line.Contains("VGA", StringComparison.OrdinalIgnoreCase) || 
+        line.Contains("3D", StringComparison.OrdinalIgnoreCase) ||
+        line.Contains("Display", StringComparison.OrdinalIgnoreCase))
+    
+    match gpuLines with
+    | [] -> None
+    | line :: _ ->
+      let parts = line.Split(':')
+      if parts.Length >= 3 then
+        Some (parts.[2].Trim())
+      else
+        None
+  with
+  | _ -> None
+
 let systemInfo () : Info =
   { distroId = getDistroId "/etc/os-release"
 
@@ -177,4 +209,6 @@ let systemInfo () : Info =
 
     localIp = getLocalIpAddress ()
 
-    upTime = getUptime "/proc/uptime" }
+    upTime = getUptime "/proc/uptime"
+    
+    gpu = getGpuInfo () }

@@ -10,7 +10,8 @@ type Info =
     memInfo: string
     cpuModel: string
     localIp: string
-    upTime: string }
+    upTime: string
+    gpu: string option }
 
 type DistroLogo =
   { distro: string

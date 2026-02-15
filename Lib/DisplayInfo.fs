@@ -101,6 +101,12 @@ let displayInfo () =
             createInfoLine "Uptime:" info.upTime
             createInfoLine "Memory:" info.memInfo
             createInfoLine "CPU:" info.cpuModel
+            
+            // Mostrar GPU solo si existe
+            match info.gpu with
+            | Some gpu -> createInfoLine "GPU:" gpu
+            | None -> ()
+            
             createInfoLine "LocalIP:" info.localIp
         }
 

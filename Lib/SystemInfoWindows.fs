@@ -153,6 +153,28 @@ let getLocalIpAddress () =
   with
   | _ -> ""
 
+let getGpuInfo () =
+  try
+    let wmiQuery = "SELECT Name FROM Win32_VideoController"
+    let searcher = new System.Management.ManagementObjectSearcher(wmiQuery)
+    let collection = searcher.Get()
+    
+    let gpus = 
+      collection 
+      |> Seq.cast<System.Management.ManagementObject>
+      |> Seq.map (fun item -> item["Name"].ToString())
+      |> Seq.filter (fun name -> 
+        not (name.Contains("Microsoft Basic") || 
+             name.Contains("Remote Desktop") || 
+             name.Contains("Virtual")))
+      |> Seq.toList
+    
+    match gpus with
+    | [] -> None
+    | gpu :: _ -> Some gpu
+  with
+  | _ -> None
+
 let systemInfo () : Info =
   { distroId = getDistroId ()
     distroName = getDistroName ()
@@ -163,4 +185,5 @@ let systemInfo () : Info =
     memInfo = getMemoryInfo ()
     cpuModel = getCPUModel ()
     localIp = getLocalIpAddress ()
-    upTime = getUptime () }
+    upTime = getUptime ()
+    gpu = getGpuInfo () }

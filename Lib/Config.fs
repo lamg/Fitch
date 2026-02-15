@@ -97,7 +97,7 @@ logoposition = "left"
 distronamelabelcolor = "Blue"
 
 # Color for the header (distro name in FigletText)
-distronameheadercolor = "Grey"
+distronameheadercolor = "DarkBlue"
 
 # Available colors: Black, Red, Green, Yellow, Blue, White, Grey,
 # DarkRed, DarkGreen, DarkBlue, DarkMagenta, DarkCyan,
