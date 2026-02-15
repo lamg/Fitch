@@ -13,20 +13,26 @@ This is a maintained and actively developed fork of the original [Fitch](https:/
 
 The original project brought system information display to Linux using F#. This fork continues that vision with major enhancements and ongoing maintenance.
 
-### Project Evolution
+**Original authors**: Luis Quintanilla, Luis Angel Mendez Gortz  
+**Current maintainer**: [Your Name] ([@jonas1ara](https://github.com/jonas1ara))
 
-**Original Project (2022-2024):**
+<details>
+<summary><b>📜 Project Evolution History</b></summary>
+
+<br>
+
+### Original Project (2022-2024)
 - Created by Luis Quintanilla and Luis Angel Mendez Gortz
 - Linux-only support with ASCII art logos
 - Basic system information display
 - Inspiration from Nitch and Neofetch
 
-**Windows Port (2024):**
+### Windows Port (2024)
 - Cross-platform support added (Windows 10/11)
 - WMI-based Windows system information gathering
 - Maintained single codebase with runtime OS detection
 
-**Current Version (2026):**
+### Current Version (2026)
 - **PNG logo support** - High-quality distribution logos
 - **GPU detection** - NVIDIA, AMD, Intel (Windows, Linux, WSL)
 - **Battery information** - Charge percentage and status
@@ -42,12 +48,11 @@ The **DistroName** display mode was part of the original vision - displaying sys
 - Distribution-specific color schemes in Logo mode
 - Respect for the minimalist, elegant approach of the original design
 
-**Original authors**: Luis Quintanilla, Luis Angel Mendez Gortz  
-**Current maintainer**: [Your Name] ([@jonas1ara](https://github.com/jonas1ara))
+</details>
 
 ---
 
-## Features
+## ✨ Features
 
 **System Information:**
 - Distribution/OS name and version
@@ -73,7 +78,7 @@ The **DistroName** display mode was part of the original vision - displaying sys
 
 ---
 
-## Installation
+## 📦 Installation
 
 ### Prerequisites
 
@@ -85,7 +90,10 @@ The **DistroName** display mode was part of the original vision - displaying sys
 dotnet tool install --global fitch
 ```
 
-### Option 2: Build from Source
+<details>
+<summary><b>Option 2: Build from Source</b></summary>
+
+<br>
 
 #### Linux
 
@@ -119,9 +127,11 @@ dotnet tool install --global fitch
    .\Setup.ps1
    ```
 
+</details>
+
 ---
 
-## Usage
+## 🚀 Usage
 
 Simply run:
 ```bash
@@ -136,13 +146,32 @@ fitch
 
 ---
 
-## Configuration
+## ⚙️ Configuration
 
 Fitch creates a configuration file on first run with sensible defaults.
 
 **Configuration file location:**
 - **Linux**: `~/.config/fitch/.fitch`
 - **Windows**: `%USERPROFILE%\.config\fitch\.fitch`
+
+### Quick Configuration
+
+```toml
+# Display mode: "logo" or "distroname"
+displaymode = "logo"
+
+# Logo position: "left" or "right"
+logoposition = "left"
+
+# Colors for DistroName mode (only apply when displaymode = "distroname")
+distronamelabelcolor = "Blue"
+distronameheadercolor = "DarkBlue"
+```
+
+<details>
+<summary><b>📖 Complete Configuration Guide</b></summary>
+
+<br>
 
 ### Configuration Options
 
@@ -205,11 +234,16 @@ distronamelabelcolor = "Orange"
 distronameheadercolor = "DarkRed"
 ```
 
+</details>
+
 ---
 
-## Optional Dependencies
+## 🔧 Optional Dependencies
 
-### GPU Detection (Linux)
+<details>
+<summary><b>GPU Detection (Linux)</b></summary>
+
+<br>
 
 For GPU detection on Linux, install `pciutils`:
 
@@ -235,9 +269,16 @@ sudo apk add pciutils
 
 Without `pciutils`, fitch will still work but won't display GPU information.
 
+</details>
+
 ---
 
-## Building for Multiple Platforms
+## 🛠️ Building for Multiple Platforms
+
+<details>
+<summary><b>Build Instructions</b></summary>
+
+<br>
 
 ### Build All Platforms
 
@@ -268,9 +309,16 @@ dotnet publish -c Release -r win-x64
 dotnet publish -c Release -r win-arm64
 ```
 
+</details>
+
 ---
 
-## Architecture
+## 🏗️ Architecture
+
+<details>
+<summary><b>Technical Details</b></summary>
+
+<br>
 
 Fitch uses a modular architecture with platform-specific implementations:
 
@@ -287,17 +335,22 @@ This design allows:
 - Clean separation of concerns
 - Efficient runtime detection
 
----
-
-## Dependencies
+### Dependencies
 
 - [Spectre.Console](https://spectreconsole.net/) - Beautiful terminal UI
 - [Spectre.Console.ImageSharp](https://spectreconsole.net/) - PNG image rendering
 - [ByteSize](https://github.com/omar/ByteSize) - Memory size formatting
 
+</details>
+
 ---
 
-## Supported Distributions
+## 🐧 Supported Distributions
+
+<details>
+<summary><b>View All Supported Systems</b></summary>
+
+<br>
 
 ### Linux
 - Arch Linux (Manjaro, EndeavourOS, etc.)
@@ -311,22 +364,29 @@ This design allows:
 - Windows 11
 - WSL (All supported Linux distributions)
 
+</details>
+
 ---
 
-## License
+## 📝 License
 
 MIT License - See [LICENSE](LICENSE) file for details.
 
-Original work Copyright (c) 2022-2023 Luis Quintanilla, Luis Angel Mendez Gortz  
+Original work Copyright (c) 2022-2024 Luis Quintanilla, Luis Angel Mendez Gortz  
 Modified work Copyright (c) 2026 [Your Name]
 
 ---
 
-## Acknowledgements
+## 🙏 Acknowledgements
+
+<details>
+<summary><b>Credits & Inspiration</b></summary>
+
+<br>
 
 **Original Authors:**
 - Luis Quintanilla ([@lquintanilla](https://github.com/lquintanilla))
-- Luis Angel Mendez Gortz
+- Luis Angel Mendez Gortz ([@lamg](https://github.com/lamg))
 
 **Inspiration:**
 - [Nitch](https://github.com/unxsh/nitch) - Minimal system information tool
@@ -338,9 +398,11 @@ Modified work Copyright (c) 2026 [Your Name]
 - Spectre.Console team for the beautiful terminal framework
 - All contributors and users who keep this project alive
 
+</details>
+
 ---
 
-## Contributing
+## 🤝 Contributing
 
 Contributions are welcome! Feel free to:
 - Report bugs
@@ -352,29 +414,37 @@ Please ensure your code follows F# conventions and includes appropriate tests.
 
 ---
 
-## Changelog
+## 📋 Changelog
+
+<details>
+<summary><b>Version History</b></summary>
+
+<br>
 
 ### v2.0.0 (2026) - Major Update
--  Added Windows support with WMI-based system information
--  PNG logo support replacing ASCII art
--  GPU detection (Windows, Linux, WSL)
--  Battery information display
--  Terminal emulator detection
--  Distribution-specific RGB color schemes
--  Enhanced configuration system
--  Improved Setup.sh with dependency checking
--  Fixed case-sensitivity issues
--  Fixed spacing in columns
+- ✨ PNG logo support replacing ASCII art
+- ✨ GPU detection (Windows, Linux, WSL)
+- ✨ Battery information display
+- ✨ Terminal emulator detection
+- ✨ Distribution-specific RGB color schemes
+- ✨ Enhanced configuration system
+- ✨ Improved Setup.sh with dependency checking
+- 🐛 Fixed case-sensitivity issues
+- 🐛 Fixed spacing in columns
+- 📝 All comments translated to English
 
-### v1.2 (2023) - Refactor and ASCII Implementation
--  Refactored codebase for better maintainability
--  Added ASCII art logos for Linux distributions
+### v1.x (2024) - Windows Support
+- ✨ Cross-platform support (Windows 10/11)
+- ✨ WMI-based Windows implementation
+- ✨ Runtime OS detection
 
-### v1.0 (2022-2023) - Original
--  Initial Linux support
--  Basic system information
--  Inspired by Nitch and Neofetch
--  Delivered in Nuget package format
+### v1.0 (2022-2024) - Original
+- ✨ Initial Linux support
+- ✨ ASCII art logos
+- ✨ Basic system information
+- ✨ Inspired by Nitch and Neofetch
+
+</details>
 
 ---
 
