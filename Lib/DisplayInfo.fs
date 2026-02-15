@@ -51,7 +51,7 @@ let displayInfo () =
 
     let alignedTextPanel = 
         let padder = Padder(textPanel)
-        padder.Padding <- Padding(0, 4, 0, 0) 
+        padder.Padding <- Padding(4, 4, 0, 0) 
         padder :> IRenderable
 
     let headerPanel : IRenderable =
