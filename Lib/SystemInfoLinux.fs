@@ -162,7 +162,7 @@ let getGpuInfo () =
   try
     let startInfo = System.Diagnostics.ProcessStartInfo()
     startInfo.FileName <- "lspci"
-    startInfo.Arguments <- ""
+    startInfo.Arguments <- "-mm"  // Machine-readable format
     startInfo.RedirectStandardOutput <- true
     startInfo.UseShellExecute <- false
     startInfo.CreateNoWindow <- true
@@ -175,39 +175,66 @@ let getGpuInfo () =
     let gpuLines = 
       lines 
       |> List.filter (fun line -> 
-        line.Contains("VGA", StringComparison.OrdinalIgnoreCase) || 
-        line.Contains("3D", StringComparison.OrdinalIgnoreCase) ||
-        line.Contains("Display", StringComparison.OrdinalIgnoreCase))
-      |> List.filter (fun line -> not (line.Contains("controller:")))
+        line.Contains("\"VGA", StringComparison.OrdinalIgnoreCase) || 
+        line.Contains("\"3D", StringComparison.OrdinalIgnoreCase) ||
+        line.Contains("\"Display", StringComparison.OrdinalIgnoreCase))
     
     match gpuLines with
     | [] -> None
     | line :: _ ->
-      // Formato típico: "01:00.0 VGA compatible controller: NVIDIA Corporation ..."
-      // Queremos solo la parte después de ": "
-      let parts = line.Split([|": "|], StringSplitOptions.None)
-      if parts.Length >= 2 then
-        let gpuName = parts.[1].Trim()
-        // Si contiene "Corporation", "Technologies", etc., limpiar
-        let cleanedName = 
-          if gpuName.Contains("Corporation") then
-            gpuName.Split([|" Corporation "|], StringSplitOptions.None).[1].Trim()
-          elif gpuName.Contains("Technologies Inc") then
-            gpuName.Split([|" Technologies Inc "|], StringSplitOptions.None).[1].Trim()
-          elif gpuName.Contains("Advanced Micro Devices") then
-            gpuName.Replace("Advanced Micro Devices, Inc. [AMD/ATI]", "AMD").Trim()
-          else
-            gpuName
+      // Formato lspci -mm: "Slot" "Class" "Vendor" "Device" "SVendor" "SDevice"
+      // Ejemplo: "01:00.0" "VGA compatible controller" "NVIDIA Corporation" "GA107M [GeForce RTX 4050]"
+      let parts = line.Split('"') |> Array.filter (fun s -> s.Trim() <> "")
+      
+      if parts.Length >= 4 then
+        let vendor = parts.[2].Trim()
+        let device = parts.[3].Trim()
         
-        // Eliminar información entre corchetes
-        let finalName = 
-          if cleanedName.Contains("[") then
-            cleanedName.Split('[').[0].Trim()
-          else
-            cleanedName
+        // Limpiar según el fabricante
+        let cleanedGpu = 
+          match vendor with
+          | v when v.Contains("NVIDIA") ->
+              let deviceName = 
+                if device.Contains("[") && device.Contains("]") then
+                  // Extraer contenido entre corchetes: "GA107M [GeForce RTX 4050]" -> "GeForce RTX 4050"
+                  let startIdx = device.IndexOf('[') + 1
+                  let endIdx = device.IndexOf(']')
+                  device.Substring(startIdx, endIdx - startIdx).Trim()
+                else
+                  device
+              $"NVIDIA {deviceName}"
+          
+          | v when v.Contains("Advanced Micro Devices") || v.Contains("AMD") || v.Contains("ATI") ->
+              let deviceName = device.Replace("[AMD/ATI]", "").Replace("[AMD]", "").Trim()
+              let deviceName = 
+                if deviceName.Contains("[") && deviceName.Contains("]") then
+                  let startIdx = deviceName.IndexOf('[') + 1
+                  let endIdx = deviceName.IndexOf(']')
+                  deviceName.Substring(startIdx, endIdx - startIdx).Trim()
+                else
+                  deviceName
+              $"AMD {deviceName}"
+          
+          | v when v.Contains("Intel") ->
+              let deviceName = 
+                device
+                  .Replace("(R)", "")
+                  .Replace("Corporation", "")
+                  .Replace("Integrated Graphics Controller", "")
+                  .Trim()
+              let deviceName = 
+                if deviceName.Contains("(") then
+                  deviceName.Split('(').[0].Trim()
+                else
+                  deviceName
+              $"Intel {deviceName}"
+          
+          | _ -> 
+              // Otros fabricantes
+              $"{vendor} {device}"
         
-        if finalName.Length > 0 && not (finalName.StartsWith("00.0")) then
-          Some finalName
+        if cleanedGpu.Length > 0 then
+          Some cleanedGpu
         else
           None
       else
