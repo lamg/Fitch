@@ -5,6 +5,7 @@ open Spectre.Console
 open Spectre.Console.Rendering
 open Lib.SystemInfo
 open Lib.Types
+open Lib.Colorize
 
 let loadLogo (logo: string) =
   let assembly = Assembly.GetExecutingAssembly()
@@ -44,22 +45,22 @@ let displayInfo () =
     Lib.Config.createDefaultConfigFile()
     
     let info = systemInfo ()
-    let textColor = getColorFromString config.textColor
+    let colorScheme = getColorScheme info.distroId
 
     let (rows: IRenderable seq) =
         seq {
-            Text($"{info.user}@{info.hostName}", Style(Color.HotPink))
+            Text($"{info.user}@{info.hostName}", Style(colorScheme.HeaderColor))
             let separator = String.replicate (info.user.Length + info.hostName.Length + 1) "─"
             Text(separator, Style(Color.White))
-            Text($"Distribution: {info.distroName}", Style(Color.HotPink))
-            Text($"Kernel: {info.kernelName}", Style(textColor))
-            Text($"Shell: {info.shell}", Style(textColor))
-            Text($"User: {info.user}", Style(Color.Yellow))
-            Text($"Hostname: {info.hostName}", Style(Color.Yellow))
-            Text($"Uptime: {info.upTime}", Style(Color.Blue))
-            Text($"Memory: {info.memInfo}", Style(Color.Blue))
-            Text($"CPU: {info.cpuModel}", Style(Color.Blue))
-            Text($"LocalIP: {info.localIp}", Style(Color.Green))
+            Markup($"[{colorScheme.LabelColor}]Distribution:[/] [{colorScheme.ValueColor}]{info.distroName}[/]")
+            Markup($"[{colorScheme.LabelColor}]Kernel:[/] [{colorScheme.ValueColor}]{info.kernelName}[/]")
+            Markup($"[{colorScheme.LabelColor}]Shell:[/] [{colorScheme.ValueColor}]{info.shell}[/]")
+            Markup($"[{colorScheme.LabelColor}]User:[/] [{colorScheme.ValueColor}]{info.user}[/]")
+            Markup($"[{colorScheme.LabelColor}]Hostname:[/] [{colorScheme.ValueColor}]{info.hostName}[/]")
+            Markup($"[{colorScheme.LabelColor}]Uptime:[/] [{colorScheme.ValueColor}]{info.upTime}[/]")
+            Markup($"[{colorScheme.LabelColor}]Memory:[/] [{colorScheme.ValueColor}]{info.memInfo}[/]")
+            Markup($"[{colorScheme.LabelColor}]CPU:[/] [{colorScheme.ValueColor}]{info.cpuModel}[/]")
+            Markup($"[{colorScheme.LabelColor}]LocalIP:[/] [{colorScheme.ValueColor}]{info.localIp}[/]")
         }
 
     let textPanel = Rows rows :> IRenderable
@@ -67,7 +68,7 @@ let displayInfo () =
     let headerPanel : IRenderable =
         match config.displayMode with
         | DistroName ->
-            renderDistroName info.distroId textColor
+            renderDistroName info.distroId colorScheme.HeaderColor
 
         | Logo ->
             // Padding solo para alinear verticalmente

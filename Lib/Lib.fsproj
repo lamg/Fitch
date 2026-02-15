@@ -6,6 +6,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Types.fs" />
+    <Compile Include="Colorize.fs" />
     <Compile Include="SystemInfoLinux.fs" />
     <Compile Include="SystemInfoWindows.fs" />
     <Compile Include="SystemInfo.fs" />
