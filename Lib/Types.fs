@@ -9,6 +9,7 @@ type Info =
     hostName: string
     memInfo: string
     cpuModel: string
+    gpu: string option
     localIp: string
     upTime: string }
 
@@ -28,6 +29,5 @@ type LogoPosition =
 type Config =
   { displayMode: DisplayMode
     logoPosition: LogoPosition
-    textColor: string
     distroNameLabelColor: string  // Color para etiquetas en modo DistroName
     distroNameHeaderColor: string } // Color para header en modo DistroName
