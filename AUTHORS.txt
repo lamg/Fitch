@@ -1,0 +1,43 @@
+Fitch - Authors and Contributors
+
+================================================================================
+ORIGINAL AUTHORS (2022-2024)
+================================================================================
+
+Luis Quintanilla (@lquintanilla)
+- Original creator and primary author
+- Linux implementation
+- Initial project architecture
+
+Luis Ángel Méndez Gort  (@lamg)
+- Early development contributions
+- ASCII art logos
+- Refactoring and code cleanup
+
+================================================================================
+FORK MAINTAINER & CONTRIBUTORS (2026-present)
+================================================================================
+
+Jonas Lara (@jonas1ara)
+- Fork maintainer
+- PNG logo implementation
+- GPU, Battery, Terminal detection
+- Windows port enhancements
+- Distribution-specific color schemes
+- Configuration system improvements
+- Documentation updates
+- NuGet package maintenance
+
+================================================================================
+ACKNOWLEDGEMENTS
+================================================================================
+
+Inspiration from:
+- Nitch (https://github.com/unxsh/nitch)
+- Neofetch (https://github.com/dylanaraps/neofetch)
+- Fastfetch (https://github.com/fastfetch-cli/fastfetch)
+
+Special thanks to:
+- F# Community
+- Spectre.Console team
+- All users and contributors

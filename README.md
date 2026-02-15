@@ -1,27 +1,77 @@
 # Fitch
 
-Command line system information display utility for Windows and Linux systems built with .NET (F#).
+A fast, cross-platform system information tool written in F#.
 
 ![Fitch CLI Tool](./images/fitch-display.png)
 
 [![Generic badge](https://img.shields.io/badge/Made%20with-FSharp-rgb(1,143,204).svg)](https://shields.io/)
 ![Tests][tests]
 
-**NOTE: This application works on Windows and Linux systems. It's been tested on the following distributions:**
+## About This Fork
 
-### Linux
-- Arch
-    - Manjaro
-- Debian
-    - Ubuntu
-- NixOS. For additional guidance, see this [article](https://www.luisquintanilla.me/wiki/nixos-dotnet-packages-source).
+This is a maintained and actively developed fork of the original [Fitch](https://github.com/lqdev/fitch) project created by **Luis Quintanilla** ([@lquintanilla](https://github.com/lquintanilla)) and **Luis Angel Mendez Gortz**. 
 
-### Windows
-- Windows 10 and later
+The original project brought system information display to Linux using F#. This fork continues that vision with major enhancements and ongoing maintenance.
 
-## Dependencies
+### Project Evolution
 
-- [Spectre.Console](https://spectreconsole.net/)
+**Original Project (2022-2024):**
+- Created by Luis Quintanilla and Luis Angel Mendez Gortz
+- Linux-only support with ASCII art logos
+- Basic system information display
+- Inspiration from Nitch and Neofetch
+
+**Windows Port (2024):**
+- Cross-platform support added (Windows 10/11)
+- WMI-based Windows system information gathering
+- Maintained single codebase with runtime OS detection
+
+**Current Version (2026):**
+- **PNG logo support** - High-quality distribution logos
+- **GPU detection** - NVIDIA, AMD, Intel (Windows, Linux, WSL)
+- **Battery information** - Charge percentage and status
+- **Terminal detection** - Identifies your terminal emulator
+- **Enhanced color schemes** - Distribution-specific RGB colors
+- **Configurable display modes** - Logo and DistroName modes
+- **Improved Setup.sh** - Better dependency checking
+
+### DistroName Mode - Honoring the Origin
+
+The **DistroName** display mode was part of the original vision - displaying system information with the distribution name in beautiful FigletText. This mode has been enhanced with:
+- Fully configurable colors via `.fitch` config file
+- Distribution-specific color schemes in Logo mode
+- Respect for the minimalist, elegant approach of the original design
+
+**Original authors**: Luis Quintanilla, Luis Angel Mendez Gortz  
+**Current maintainer**: [Your Name] ([@jonas1ara](https://github.com/jonas1ara))
+
+---
+
+## Features
+
+✨ **System Information:**
+- Distribution/OS name and version
+- Kernel version
+- Terminal emulator
+- Shell
+- User and hostname
+- Uptime
+- Memory usage
+- CPU model
+- GPU (optional - if detected)
+- Battery status (optional - on laptops)
+- Local IP address
+
+🎨 **Display Modes:**
+- **Logo Mode**: Distribution PNG logos with system info
+- **DistroName Mode**: Distribution name in FigletText with customizable colors
+
+🎯 **Supported Platforms:**
+- Linux (Debian, Ubuntu, Fedora, Arch, NixOS, Alpine, Mint)
+- Windows 10/11
+- WSL (Windows Subsystem for Linux)
+
+---
 
 ## Installation
 
@@ -29,132 +79,181 @@ Command line system information display utility for Windows and Linux systems bu
 
 - [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
 
-### Install from [nuget](https://www.nuget.org/packages/fitch)
-
-#### Instructions
-
-Installation is as easy as:
+### Option 1: Install from NuGet (Recommended)
 
 ```bash
 dotnet tool install --global fitch
 ```
 
-### Build from source
+### Option 2: Build from Source
 
-#### Instructions - Linux
+#### Linux
 
-1. Clone [fitch repo](http://www.luisquintanilla.me/github/fitch) on your machine
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/jonas1ara/fitch.git
+   cd fitch
+   ```
 
-    ```bash
-    git clone https://github.com/lqdev/fitch.git && cd fitch
-    ```
+2. Run the setup script:
+   ```bash
+   chmod +x Setup.sh
+   ./Setup.sh
+   ```
 
-1. Run the setup script
+   The script will:
+   - Check for optional dependencies (`lspci` for GPU detection)
+   - Build and install fitch as a global .NET tool
+   - Make it available system-wide
 
-    ```bash
-    ./Setup.sh
-    ```
+#### Windows
 
-    ![Setup.sh](./images/setup.gif)
+1. Clone the repository:
+   ```powershell
+   git clone https://github.com/jonas1ara/fitch.git
+   cd fitch
+   ```
 
-    Running this script will generate an executable called `fitch` in the *bin/Release/net8.0/linux-x64/publish* directory and copy it to the */usr/bin/* directory, so you can run the application from anywhere in your system.
+2. Run the PowerShell setup script:
+   ```powershell
+   .\Setup.ps1
+   ```
 
-#### Instructions - Windows
+---
 
-1. Clone [fitch repo](http://www.luisquintanilla.me/github/fitch) on your machine
+## Usage
 
-    ```powershell
-    git clone https://github.com/lqdev/fitch.git; cd fitch
-    ```
+Simply run:
+```bash
+fitch
+```
 
-1. Run the PowerShell setup script
+**Optional**: Add `fitch` to your shell config (`.bashrc`, `.zshrc`, etc.) to display on terminal startup:
+```bash
+# In ~/.bashrc or ~/.zshrc
+fitch
+```
 
-    ```powershell
-    .\Setup.ps1
-    ```
-
-    Running this script will build, package, and install fitch as a global dotnet tool, so you can run the application from anywhere in your terminal.
-
-## Run application
-
-1. For both cases just type `fitch` in your terminal
-
-    ```bash
-    fitch
-    ```
-
-1. (Optional) Add the `fitch` command to your shell config file to start when your shell starts
+---
 
 ## Configuration
 
-Fitch can be customized through a configuration file. The configuration file is automatically created on first run with default values.
+Fitch creates a configuration file on first run with sensible defaults.
 
 **Configuration file location:**
 - **Linux**: `~/.config/fitch/.fitch`
-- **Windows**: `%APPDATA%\fitch\.fitch`
+- **Windows**: `%USERPROFILE%\.config\fitch\.fitch`
 
 ### Configuration Options
 
-The `.fitch` file uses TOML format with the following options:
-
 ```toml
-# Modo de visualización: "logo" o "distroname"
-displaymode = "distroname"
+# Display mode: "logo" or "distroname"
+displaymode = "logo"
 
-# Posición del logo: "left" o "right"
-logoposition = "right"
+# Logo position: "left" or "right"
+logoposition = "left"
 
-# Color del texto: nombre de color Spectre (HotPink, Yellow, Blue, Green, etc.)
-textcolor = "HotPink"
+# ============================================
+# Colors for DistroName mode (only apply when displaymode = "distroname")
+# ============================================
+
+# Color for labels (Distribution:, Kernel:, etc.) and user@hostname
+distronamelabelcolor = "Blue"
+
+# Color for the header (distro name in FigletText)
+distronameheadercolor = "DarkBlue"
+
+# Available colors: Black, Red, Green, Yellow, Blue, White, Grey,
+# DarkRed, DarkGreen, DarkBlue, DarkMagenta, DarkCyan,
+# HotPink, Orange, Purple, Teal, Aqua, Fuchsia, Lime, Maroon, Navy, Olive, Silver
 ```
 
-#### displaymode
-- `"logo"` - Displays the distribution's ASCII logo
-- `"distroname"` - Displays the distribution name with Spectre Console styling (default)
+### Display Modes
 
-#### logoposition
-- `"left"` - Places the logo/name on the left side
-- `"right"` - Places the logo/name on the right side (default)
+#### Logo Mode (Default)
+- Shows distribution PNG logo
+- Uses distribution-specific color schemes (Fedora blue, Ubuntu orange, etc.)
+- Logo can be positioned left or right
 
-#### textcolor
-- Any valid Spectre Console color name (e.g., `HotPink`, `Yellow`, `Blue`, `Green`, `Cyan`, `Magenta`, etc.)
-- This color applies to the distribution name, kernel, and shell labels
+#### DistroName Mode
+- Shows distribution name in ASCII art (FigletText)
+- Fully customizable label and header colors
+- Honors the original minimalist design philosophy
+- Perfect for terminals where PNG logos don't render well
 
 ### Example Configurations
 
-**Show logo with custom colors:**
+**Fedora style with logo on the left:**
 ```toml
 displaymode = "logo"
 logoposition = "left"
-textcolor = "Cyan"
 ```
 
-**Show distro name on the right in blue:**
+**DistroName mode with custom colors:**
 ```toml
 displaymode = "distroname"
 logoposition = "right"
-textcolor = "Blue"
+distronamelabelcolor = "Cyan"
+distronameheadercolor = "Blue"
 ```
+
+**Ubuntu orange theme:**
+```toml
+displaymode = "distroname"
+logoposition = "left"
+distronamelabelcolor = "Orange"
+distronameheadercolor = "DarkRed"
+```
+
+---
+
+## Optional Dependencies
+
+### GPU Detection (Linux)
+
+For GPU detection on Linux, install `pciutils`:
+
+**Debian/Ubuntu:**
+```bash
+sudo apt install pciutils
+```
+
+**Fedora/RHEL:**
+```bash
+sudo dnf install pciutils
+```
+
+**Arch:**
+```bash
+sudo pacman -S pciutils
+```
+
+**Alpine:**
+```bash
+sudo apk add pciutils
+```
+
+Without `pciutils`, fitch will still work but won't display GPU information.
+
+---
 
 ## Building for Multiple Platforms
 
-Fitch now supports building for both Windows and Linux in a single codebase. The application uses runtime OS detection to automatically select the correct system information gathering implementation.
-
 ### Build All Platforms
 
-**On Linux:**
+**Linux:**
 ```bash
 ./Build.sh
 ```
 
-**On Windows:**
+**Windows:**
 ```powershell
 .\Build.ps1
 ```
 
-This will generate executables for:
-- **Windows x64** and **Windows ARM64**
-- **Linux x64**
+Generates executables for:
+- Windows x64 and ARM64
+- Linux x64
 
 ### Build for Specific Platform
 
@@ -169,24 +268,117 @@ dotnet publish -c Release -r win-x64
 dotnet publish -c Release -r win-arm64
 ```
 
+---
+
 ## Architecture
 
-The application uses platform-specific modules that are selected at runtime:
+Fitch uses a modular architecture with platform-specific implementations:
 
-- **`SystemInfoLinux.fs`** - Gathers system info from `/proc` and `/etc` files
-- **`SystemInfoWindows.fs`** - Gathers system info using Windows Management Instrumentation (WMI)
-- **`SystemInfo.fs`** - Router module that detects the OS and calls the appropriate implementation
+- **`SystemInfoLinux.fs`** - Gathers info from `/proc`, `/etc`, and `lspci`
+- **`SystemInfoWindows.fs`** - Uses Windows Management Instrumentation (WMI)
+- **`SystemInfo.fs`** - Runtime OS detection and routing
+- **`DisplayInfo.fs`** - Rendering with Spectre.Console
+- **`Colorize.fs`** - Distribution-specific color schemes
+- **`Config.fs`** - Configuration file parsing
 
-This approach allows maintaining a single codebase while supporting different operating systems efficiently.
+This design allows:
+- Single codebase for multiple platforms
+- Easy addition of new distributions
+- Clean separation of concerns
+- Efficient runtime detection
 
-## To-Dos
+---
 
-- [x] Enable customization through config file
-- [x] Cross-platform support (Windows and Linux)
+## Dependencies
+
+- [Spectre.Console](https://spectreconsole.net/) - Beautiful terminal UI
+- [Spectre.Console.ImageSharp](https://spectreconsole.net/) - PNG image rendering
+- [ByteSize](https://github.com/omar/ByteSize) - Memory size formatting
+
+---
+
+## Supported Distributions
+
+### Linux
+- Arch Linux (Manjaro, EndeavourOS, etc.)
+- Debian (Ubuntu, Linux Mint, Pop!_OS, etc.)
+- Fedora (RHEL, CentOS, etc.)
+- NixOS ([Additional guidance](https://www.luisquintanilla.me/wiki/nixos-dotnet-packages-source))
+- Alpine Linux
+
+### Windows
+- Windows 10 and later
+- Windows 11
+- WSL (All supported Linux distributions)
+
+---
+
+## License
+
+MIT License - See [LICENSE](LICENSE) file for details.
+
+Original work Copyright (c) 2022-2024 Luis Quintanilla, Luis Angel Mendez Gortz  
+Modified work Copyright (c) 2026 [Your Name]
+
+---
 
 ## Acknowledgements
 
-This project was inspired by [Nitch](https://github.com/unxsh/nitch), [Neofetch](https://github.com/dylanaraps/neofetch) and made with [WSL](https://learn.microsoft.com/en-us/windows/wsl/) 🐧
+**Original Authors:**
+- Luis Quintanilla ([@lquintanilla](https://github.com/lquintanilla))
+- Luis Angel Mendez Gortz
 
+**Inspiration:**
+- [Nitch](https://github.com/unxsh/nitch) - Minimal system information tool
+- [Neofetch](https://github.com/dylanaraps/neofetch) - The legendary system info script
+- [Fastfetch](https://github.com/fastfetch-cli/fastfetch) - Fast neofetch-like tool
 
-[tests]: https://github.com/lamg/fitch/workflows/tests/badge.svg
+**Special Thanks:**
+- F# Community for the amazing ecosystem
+- Spectre.Console team for the beautiful terminal framework
+- All contributors and users who keep this project alive
+
+---
+
+## Contributing
+
+Contributions are welcome! Feel free to:
+- Report bugs
+- Suggest features
+- Submit pull requests
+- Improve documentation
+
+Please ensure your code follows F# conventions and includes appropriate tests.
+
+---
+
+## Changelog
+
+### v2.0.0 (2026) - Major Update
+- ✨ PNG logo support replacing ASCII art
+- ✨ GPU detection (Windows, Linux, WSL)
+- ✨ Battery information display
+- ✨ Terminal emulator detection
+- ✨ Distribution-specific RGB color schemes
+- ✨ Enhanced configuration system
+- ✨ Improved Setup.sh with dependency checking
+- 🐛 Fixed case-sensitivity issues
+- 🐛 Fixed spacing in columns
+- 📝 All comments translated to English
+
+### v1.x (2024) - Windows Support
+- ✨ Cross-platform support (Windows 10/11)
+- ✨ WMI-based Windows implementation
+- ✨ Runtime OS detection
+
+### v1.0 (2022-2024) - Original
+- ✨ Initial Linux support
+- ✨ ASCII art logos
+- ✨ Basic system information
+- ✨ Inspired by Nitch and Neofetch
+
+---
+
+**Made with ❤️ and F#**
+
+[tests]: https://github.com/jonas1ara/fitch/workflows/tests/badge.svg
