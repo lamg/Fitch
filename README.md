@@ -14,7 +14,7 @@ This is a maintained and actively developed fork of the original [Fitch](https:/
 The original project brought system information display to Linux using F#. This fork continues that vision with major enhancements and ongoing maintenance.
 
 **Original authors**: Luis Quintanilla, Luis Angel Mendez Gortz  
-**Current maintainer**: [Your Name] ([@jonas1ara](https://github.com/jonas1ara))
+**Current maintainer**: Jonas Lara ([@jonas1ara](https://github.com/jonas1ara))
 
 <details>
 <summary><b>📜 Project Evolution History</b></summary>
