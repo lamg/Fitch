@@ -9,7 +9,7 @@ A fast, cross-platform system information tool written in F#.
 
 ## About This Fork
 
-This is a maintained and actively developed fork of the original [Fitch](https://github.com/lqdev/fitch) project created by **Luis Quintanilla** ([@lquintanilla](https://github.com/lquintanilla)) and **Luis Angel Mendez Gortz**. 
+This is a maintained and actively developed fork of the original [Fitch](https://github.com/lqdev/fitch) project created by **Luis Quintanilla** ([@lquintanilla](https://github.com/lquintanilla)) and **Luis Angel Mendez Gortz** ([@lamg](https://github.com/lamg)). 
 
 The original project brought system information display to Linux using F#. This fork continues that vision with major enhancements and ongoing maintenance.
 
