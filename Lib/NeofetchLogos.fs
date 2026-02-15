@@ -49,10 +49,10 @@ let unknown =
     logo = readLogo "unknown" }
 
 let windows10 =
-  { distro = "Windows 10"; colors = ["6"; "7"]; logo = readLogo "windows10" }
+  { distro = "Windows 10"; colors = ["4"; "7"]; logo = readLogo "windows10" }
 
 let windows11 =
-  { distro = "Windows 11"; colors = ["6"; "7"]; logo = readLogo "windows11" }
+  { distro = "Windows 11"; colors = ["4"; "7"]; logo = readLogo "windows11" }
 
 let logoDictionary =
   [ ("arch", arch)
