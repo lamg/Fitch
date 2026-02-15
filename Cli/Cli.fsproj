@@ -4,14 +4,18 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net8.0</TargetFramework>
     <LangVersion>preview</LangVersion>
-    <Version>1.2.0</Version>
+    <Version>2.0.0</Version>
     <PackageId>fitch</PackageId>
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>fitch</ToolCommandName>
     <PackageOutputPath>./nupkg</PackageOutputPath>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <RepositoryUrl>https://github.com/lqdev/fitch</RepositoryUrl>
-    <Description>Command line system information display utility for Windows and Linux systems built with .NET (F#).</Description>
+    <RepositoryUrl>https://github.com/jonas1ara/fitch</RepositoryUrl>
+    <Description>A fast, cross-platform system information tool with PNG logos, GPU/Battery/Terminal detection. Built with F# and .NET.</Description>
+    <Authors>Luis Quintanilla;Luis Angel Mendez Gortz;Jonas Lara</Authors>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/jonas1ara/fitch</PackageProjectUrl>
+    <PackageTags>neofetch;system-info;fsharp;dotnet;cli;terminal</PackageTags>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Program.fs" />
